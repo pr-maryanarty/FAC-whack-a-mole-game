@@ -5,5 +5,9 @@
     font-family: "Dosis", sans-serif;
 }
 body {
-    background-color: #656cce;
+    background: url("/backgroound2.jpg");
+    background-size: cover;
+}
+h1 {
+    color: white;
 }
