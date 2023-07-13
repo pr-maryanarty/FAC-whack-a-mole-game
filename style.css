@@ -2,12 +2,44 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: "Dosis", sans-serif;
+    font-family: "Press Start 2P", cursive;
 }
 body {
-    background: url("/backgroound2.jpg");
+    background: url("./src/backgroound2.jpg");
     background-size: cover;
+    background-attachment: fixed;
 }
 h1 {
     color: white;
+}
+#container {
+    width: 39vw;
+    height: 39vw;
+    background: white;
+
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 1rem;
+    border: 3px, solid, wheat;
+}
+
+#container div {
+    width: 13vw;
+    height: 13vw;
+    background-image: url("./src/pngwing.com.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+#container div img {
+    width: 9vw;
+    height: 9vw;
+    display: block;
+    margin: auto;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
