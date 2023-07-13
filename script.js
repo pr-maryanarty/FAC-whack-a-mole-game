@@ -2,9 +2,11 @@ let currentMoleBurrow;
 let currentSkullBurrow;
 let score = 0;
 let gameOver = false;
+let game_load = new Audio("game_load.mp3");
 
 window.onload = function () {
     setGame();
+    game_load.play();
 };
 
 function setGame() {
@@ -60,6 +62,7 @@ function posiitonSkull() {
     currentSkullBurrow.appendChild(skull);
 }
 function selectBurrow() {
+    getRandomBurrow();
     if (gameOver) {
         return;
     }
