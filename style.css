@@ -12,6 +12,7 @@ body {
 h1,
 h2 {
     color: white;
+    text-align: center;
 }
 
 #container {
@@ -44,4 +45,19 @@ h2 {
     -webkit-user-drag: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+
+button img {
+    width: 18vw;
+    height: 14vw;
+    margin: auto;
+}
+button {
+    border: none;
+    cursor: pointer;
+    appearance: none;
+    background-color: inherit;
+}
+button.hide {
+    display: none;
 }
