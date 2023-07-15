@@ -5,7 +5,8 @@ let game_load = new Audio("./src/music/game_load.mp3");
 let cry_of_hurt = new Audio("./src/music/cry_of_hurt.mp3");
 let whack_a_mole = new Audio("./src/music/whack_a_mole.mp3");
 let clickedOnCurrentTick = false;
-let currentNumber;
+let currentMoleNumber;
+let currentSkullNumber;
 let moleIntervalid;
 let skullIntervalid;
 
@@ -40,12 +41,12 @@ function resetGame() {
     clearInterval(skullIntervalid);
 }
 
-function getRandomBurrow() {
+function getRandomBurrow(currentNumber) {
     let num = Math.floor(Math.random() * 9);
     while (num == currentNumber) {
         num = Math.floor(Math.random() * 9);
     }
-    currentNumber = num;
+
     return num.toString();
 }
 
@@ -55,11 +56,11 @@ function positionMole() {
     }
     let mole = document.createElement("img");
     mole.src = "./src/mole.png";
-    let num = getRandomBurrow();
-    if (currentSkullBurrow && currentSkullBurrow.id == num) {
+    currentMoleNumber = getRandomBurrow(currentMoleNumber);
+    if (currentSkullBurrow && currentSkullBurrow.id == currentMoleNumber) {
         return;
     }
-    currentMoleBurrow = document.getElementById(num);
+    currentMoleBurrow = document.getElementById(currentMoleNumber);
     currentMoleBurrow.appendChild(mole);
     clickedOnCurrentTick = false;
 }
@@ -70,11 +71,11 @@ function posiitonSkull() {
     }
     let skull = document.createElement("img");
     skull.src = "./src/skull.png";
-    let num = getRandomBurrow();
-    if (currentMoleBurrow && currentMoleBurrow.id == num) {
+    currentSkullNumber = getRandomBurrow(currentSkullNumber);
+    if (currentMoleBurrow && currentMoleBurrow.id == currentSkullNumber) {
         return;
     }
-    currentSkullBurrow = document.getElementById(num);
+    currentSkullBurrow = document.getElementById(currentSkullNumber);
     currentSkullBurrow.appendChild(skull);
 }
 function selectBurrow() {
@@ -92,7 +93,7 @@ function selectBurrow() {
             clearInterval(skullIntervalid);
             moleIntervalid = setInterval(positionMole, 600);
             skullIntervalid = setInterval(posiitonSkull, 1000);
-        } else if (score > 300) {
+        } else if (score > 200) {
             clearInterval(moleIntervalid);
             clearInterval(skullIntervalid);
             moleIntervalid = setInterval(positionMole, 300);
