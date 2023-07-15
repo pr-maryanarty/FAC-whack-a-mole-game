@@ -1,13 +1,13 @@
 let currentMoleBurrow;
 let currentSkullBurrow;
 let score = 0;
-let gameOver = false;
 let game_load = new Audio("./src/music/game_load.mp3");
 let cry_of_hurt = new Audio("./src/music/cry_of_hurt.mp3");
 let whack_a_mole = new Audio("./src/music/whack_a_mole.mp3");
-let new_level = new Audio("./src/music/next_level.mp3");
 let clickedOnCurrentTick = false;
 let currentNumber;
+let moleIntervalid;
+let skullIntervalid;
 
 document.getElementById("starter").addEventListener("click", setGame);
 
@@ -19,37 +19,37 @@ starter.addEventListener("click", () => {
 });
 
 function setGame() {
+    score = 0;
+    document.getElementById("score").innerText =
+        "Your score:" + score.toString();
     for (let i = 0; i < 9; i++) {
         let burrow = document.createElement("div");
         burrow.id = i.toString();
         document.getElementById("container").appendChild(burrow);
         burrow.addEventListener("click", selectBurrow);
     }
-    if (score < 100) {
-        setInterval(positionMole, 800);
-        setInterval(posiitonSkull, 1000);
-    } else if (score < 300) {
-        setInterval(positionMole, 600);
-        setInterval(posiitonSkull, 1000);
+
+    moleIntervalid = setInterval(positionMole, 800);
+    skullIntervalid = setInterval(posiitonSkull, 1200);
+}
+function resetGame() {
+    for (let i = 0; i < 9; i++) {
+        document.getElementById(i).remove();
     }
-    if (score == 50 || score == 300) {
-        document.body.style.backgroundImage = url("./src/background3.jpg");
-    }
+    clearInterval(moleIntervalid);
+    clearInterval(skullIntervalid);
 }
 
 function getRandomBurrow() {
-    let num = Math.floor(Math.random() * 9); //2
+    let num = Math.floor(Math.random() * 9);
     while (num == currentNumber) {
-        num = Math.floor(Math.random() * 9); //2
+        num = Math.floor(Math.random() * 9);
     }
     currentNumber = num;
     return num.toString();
 }
 
 function positionMole() {
-    if (gameOver) {
-        return;
-    }
     if (currentMoleBurrow) {
         currentMoleBurrow.innerHTML = "";
     }
@@ -65,9 +65,6 @@ function positionMole() {
 }
 
 function posiitonSkull() {
-    if (gameOver) {
-        return;
-    }
     if (currentSkullBurrow) {
         currentSkullBurrow.innerHTML = "";
     }
@@ -82,9 +79,6 @@ function posiitonSkull() {
 }
 function selectBurrow() {
     getRandomBurrow();
-    if (gameOver) {
-        return;
-    }
     if (this == currentMoleBurrow) {
         whack_a_mole.play();
 
@@ -93,15 +87,25 @@ function selectBurrow() {
             clickedOnCurrentTick = true;
         }
 
+        if (score > 50) {
+            clearInterval(moleIntervalid);
+            clearInterval(skullIntervalid);
+            moleIntervalid = setInterval(positionMole, 600);
+            skullIntervalid = setInterval(posiitonSkull, 1000);
+        } else if (score > 300) {
+            clearInterval(moleIntervalid);
+            clearInterval(skullIntervalid);
+            moleIntervalid = setInterval(positionMole, 300);
+            skullIntervalid = setInterval(posiitonSkull, 600);
+        }
         document.getElementById("score").innerText =
             "Score:" + score.toString();
     } else if (this == currentSkullBurrow) {
         cry_of_hurt.play();
         document.getElementById("score").innerText =
             "Game is over! Your score:" + score.toString();
-        gameOver = true;
         starter.classList.toggle("hide");
         document.getElementById("container").classList.toggle("hide");
-        setGame();
+        resetGame();
     }
 }
