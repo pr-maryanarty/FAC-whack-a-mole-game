@@ -5,22 +5,17 @@ let gameOver = false;
 let game_load = new Audio("./src/music/game_load.mp3");
 let cry_of_hurt = new Audio("./src/music/cry_of_hurt.mp3");
 let whack_a_mole = new Audio("./src/music/whack_a_mole.mp3");
+let new_level = new Audio("./src/music/next_level.mp3");
 let clickedOnCurrentTick = false;
 let currentNumber;
-// let clickedTick = document.getElementById(clickedTick);
-// clickedTick.classList.toggle("true");
 
 document.getElementById("starter").addEventListener("click", setGame);
-
-// window.onload = function () {
-//     setGame();
-//     game_load.play();
-//     game_load.preload = "auto";
-// };
 
 const starter = document.getElementById("starter");
 starter.addEventListener("click", () => {
     starter.classList.toggle("hide");
+    game_load.play();
+    document.getElementById("container").classList.remove("hide");
 });
 
 function setGame() {
@@ -30,22 +25,27 @@ function setGame() {
         document.getElementById("container").appendChild(burrow);
         burrow.addEventListener("click", selectBurrow);
     }
-    if (score < 150) {
+    if (score < 100) {
         setInterval(positionMole, 800);
         setInterval(posiitonSkull, 1000);
     } else if (score < 300) {
-        setInterval(positionMole, 700);
+        setInterval(positionMole, 600);
         setInterval(posiitonSkull, 1000);
+    }
+    if (score == 50 || score == 300) {
+        document.body.style.backgroundImage = url("./src/background3.jpg");
     }
 }
 
 function getRandomBurrow() {
-    // if new num equals old num, rerandom
-    // or until new number does not get different to old number rerandom
-    let num = Math.floor(Math.random() * 9);
-
+    let num = Math.floor(Math.random() * 9); //2
+    while (num == currentNumber) {
+        num = Math.floor(Math.random() * 9); //2
+    }
+    currentNumber = num;
     return num.toString();
 }
+
 function positionMole() {
     if (gameOver) {
         return;
@@ -63,6 +63,7 @@ function positionMole() {
     currentMoleBurrow.appendChild(mole);
     clickedOnCurrentTick = false;
 }
+
 function posiitonSkull() {
     if (gameOver) {
         return;
@@ -73,8 +74,6 @@ function posiitonSkull() {
     let skull = document.createElement("img");
     skull.src = "./src/skull.png";
     let num = getRandomBurrow();
-    // currentNumber = num
-    // return
     if (currentMoleBurrow && currentMoleBurrow.id == num) {
         return;
     }
@@ -101,5 +100,8 @@ function selectBurrow() {
         document.getElementById("score").innerText =
             "Game is over! Your score:" + score.toString();
         gameOver = true;
+        starter.classList.toggle("hide");
+        document.getElementById("container").classList.toggle("hide");
+        setGame();
     }
 }
